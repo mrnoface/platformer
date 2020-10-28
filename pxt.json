@@ -2,7 +2,8 @@
     "name": "PLatformer",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "palette": "*"
     },
     "files": [
         "main.blocks",
