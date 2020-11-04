@@ -1,19 +1,102 @@
+namespace SpriteKind {
+    export const bonus = SpriteKind.create()
+}
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Player1.vy == 0) {
         Player1.vy = -150
     }
 })
-controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    Player1.vy = 200
+sprites.onOverlap(SpriteKind.Player, SpriteKind.bonus, function (sprite, otherSprite) {
+    Player1.setImage(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . f 4 4 4 4 4 4 f . . . . 
+        . . . . f f f 4 4 f f f . . . . 
+        . . . . f 4 4 4 4 4 4 f . . . . 
+        . . . . f 4 4 1 1 4 4 f . . . . 
+        . . . . f f 4 f f 4 f f . . . . 
+        . . . . . f 4 1 1 4 f . . . . . 
+        . . . . . . f f f f . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . f f e e f f . . . . . 
+        . . . . f e e e e e e f . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . . . f e e f . . . . . . 
+        . . . . . . f e e f . . . . . . 
+        . . . . . . f f f f . . . . . . 
+        `)
+    chest.setImage(img`
+        . . . . . . . . . . . 5 . . . . 
+        . . . . . . . . . . 5 . 5 . . . 
+        . . . . . . . . . 5 . . . . . . 
+        . . . . . . . . 5 . 5 . . . . . 
+        . . . . 5 5 . 5 . . . . . . . . 
+        . . . 5 . . 5 . . . . . . . . . 
+        . . 5 . . . . 5 . . . . . . . . 
+        . . 5 . . . . 5 . . . . . . . . 
+        . . . 5 . . 5 . . . . . . . . . 
+        . . . . 5 5 . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `)
+    pause(500)
+    otherSprite.destroy(effects.fountain, 500)
+    Player1.setImage(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . f 4 4 4 4 4 4 f . . . . 
+        . . . . f f f 4 4 f f f . . . . 
+        . . . . f 4 4 4 4 4 4 f . . . . 
+        . . . . f 4 4 4 4 4 4 f . . . . 
+        . . . . f f 4 f f 4 f f . . . . 
+        . . . . . f 4 4 4 4 f . . . . . 
+        . . . . . . f f f f . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . f f e e f f . . . . . 
+        . . . . f e e e e e e f . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . . . f e e f . . . . . . 
+        . . . . . . f e e f . . . . . . 
+        . . . . . . f f f f . . . . . . 
+        `)
+    for (let value of wall) {
+        tiles.setTileAt(value, myTiles.transparency16)
+        tiles.setWallAt(value, false)
+    }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (sprite.y < otherSprite.top) {
         otherSprite.destroy(effects.fire, 100)
+        chest = sprites.create(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . 5 5 . . . . . . . . . . 
+            . . . 5 . . 5 . . . . . . . . . 
+            . . 5 . . . . 5 5 5 5 5 5 5 . . 
+            . . 5 . . . . 5 . . . 5 . 5 . . 
+            . . . 5 . . 5 . . . . . . . . . 
+            . . . . 5 5 . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, SpriteKind.bonus)
+        tiles.placeOnTile(chest, tiles.getTileLocation(22, 2))
     } else {
         game.over(false)
     }
 })
+let chest: Sprite = null
 let Player1: Sprite = null
+let wall: tiles.Location[] = []
 scene.setBackgroundImage(img`
     8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
     8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
@@ -136,18 +219,19 @@ scene.setBackgroundImage(img`
     8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
     8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
     `)
-tiles.setTilemap(tiles.createTilemap(hex`1f000a000303030303030303030303030309070707070707070707070707070303030307070707070707070707070707080000000010000000000000000011070707000a0b000f00000000001300000000000000101600000012000000000000000000000000000000000000000000000000000f000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000000000000000150000000000001400000000000000000000000401010101010101010101010101010101010102000000000000000000040103030303030303030303030303030303030303030102000004010101010303030303030303030303030303030303030303030303050e0e06030303030303030303030303030303030303030303030303030303050d0d0603030303030303030303`, img`
-    ...............................
-    ...........................2222
-    ...............................
-    ...............................
-    ...............................
-    ...........................2222
-    2222222222222222.........222...
-    ...............222..222222.....
-    .................2..2..........
-    .................2..2..........
-    `, [myTiles.transparency16,sprites.dungeon.darkGroundNorth,sprites.dungeon.darkGroundNorthEast0,sprites.dungeon.darkGroundCenter,sprites.dungeon.darkGroundNorthWest0,sprites.dungeon.darkGroundEast,sprites.dungeon.darkGroundWest,sprites.dungeon.darkGroundSouth,sprites.dungeon.darkGroundSouthEast0,sprites.dungeon.darkGroundNorthWest1,myTiles.tile3,myTiles.tile4,myTiles.tile5,sprites.dungeon.hazardLava0,myTiles.tile7,myTiles.tile8,myTiles.tile9,sprites.dungeon.darkGroundSouthWest0,myTiles.tile11,myTiles.tile10,myTiles.tile12,myTiles.tile15,myTiles.tile19], TileScale.Sixteen))
+tiles.setTilemap(tiles.createTilemap(hex`3c000a00030303030303030303030303030907070707070707070707070707190303030303030303030907070707070707070707070707070707070707070707070707070707070707070707070800000000100605000000000000110707070707070707070800000000000000000000000000000000000000000000000a0b000f000000000013000000000000001006050000120000000000001600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f1107010200000000000000160000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000011070200000000000016000000000000000000000000000004010101010101010101010101010100000000000000001500000000000014000000000000000000000004010101010200000000000000000000000006030303030303030303030303030301010101010101010101010101010102000000000000000000040118030303031701010101020e0e0e0e04010118030303030303030303030303030303030303030303030303030303030317010200000401010101180303030303030303030303051a0d1a1a0603030303030303030303030303030303030303030303030303030303030303030303050e0e0603030303030303030303030303030303051a1a1a0d0603030303030303030303030303030303030303030303030303030303030303030303050d0d0603030303030303030303030303030303050d1a0d1a060303030303030303030303030303030303`, img`
+    .....................222222...........2222222222222222222222
+    ...................22......22222222222......................
+    ...................22.........2.............................
+    ...................2222.......2.............................
+    .....................222......2..............222222222222222
+    ...........................222222............2..............
+    2222222222222222.........222.....22222....222...............
+    ...............222..222222...........2....2.................
+    .................2..2................2....2.................
+    .................2..2................2....2.................
+    `, [myTiles.transparency16,sprites.dungeon.darkGroundNorth,sprites.dungeon.darkGroundNorthEast0,sprites.dungeon.darkGroundCenter,sprites.dungeon.darkGroundNorthWest0,sprites.dungeon.darkGroundEast,sprites.dungeon.darkGroundWest,sprites.dungeon.darkGroundSouth,sprites.dungeon.darkGroundSouthEast0,sprites.dungeon.darkGroundNorthWest1,myTiles.tile3,myTiles.tile4,myTiles.tile5,sprites.dungeon.hazardLava0,myTiles.tile7,myTiles.tile8,myTiles.tile9,sprites.dungeon.darkGroundSouthWest0,myTiles.tile11,myTiles.tile10,myTiles.tile12,myTiles.tile15,myTiles.tile20,sprites.dungeon.darkGroundSouthWest1,sprites.dungeon.darkGroundSouthEast1,sprites.dungeon.darkGroundNorthEast1,sprites.dungeon.hazardLava1], TileScale.Sixteen))
+wall = tiles.getTilesByType(myTiles.tile20)
 Player1 = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . f f f f f f f f . . . . 
