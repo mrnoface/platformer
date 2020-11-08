@@ -7,24 +7,6 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.bonus, function (sprite, otherSprite) {
-    Player1.setImage(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . f 4 4 4 4 4 4 f . . . . 
-        . . . . f f f 4 4 f f f . . . . 
-        . . . . f 4 4 4 4 4 4 f . . . . 
-        . . . . f 4 4 1 1 4 4 f . . . . 
-        . . . . f f 4 f f 4 f f . . . . 
-        . . . . . f 4 1 1 4 f . . . . . 
-        . . . . . . f f f f . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . f f e e f f . . . . . 
-        . . . . f e e e e e e f . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . . . f e e f . . . . . . 
-        . . . . . . f e e f . . . . . . 
-        . . . . . . f f f f . . . . . . 
-        `)
     chest.setImage(img`
         . . . . . . . . . . . 5 . . . . 
         . . . . . . . . . . 5 . 5 . . . 
@@ -45,24 +27,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.bonus, function (sprite, otherSp
         `)
     pause(500)
     otherSprite.destroy(effects.fountain, 500)
-    Player1.setImage(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . f 4 4 4 4 4 4 f . . . . 
-        . . . . f f f 4 4 f f f . . . . 
-        . . . . f 4 4 4 4 4 4 f . . . . 
-        . . . . f 4 4 4 4 4 4 f . . . . 
-        . . . . f f 4 f f 4 f f . . . . 
-        . . . . . f 4 4 4 4 f . . . . . 
-        . . . . . . f f f f . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . f f e e f f . . . . . 
-        . . . . f e e e e e e f . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . . . f e e f . . . . . . 
-        . . . . . . f e e f . . . . . . 
-        . . . . . . f f f f . . . . . . 
-        `)
     for (let value of wall) {
         tiles.setTileAt(value, myTiles.transparency16)
         tiles.setWallAt(value, false)
@@ -233,22 +197,25 @@ tiles.setTilemap(tiles.createTilemap(hex`3c000a000303030303030303030303030309070
     `, [myTiles.transparency16,sprites.dungeon.darkGroundNorth,sprites.dungeon.darkGroundNorthEast0,sprites.dungeon.darkGroundCenter,sprites.dungeon.darkGroundNorthWest0,sprites.dungeon.darkGroundEast,sprites.dungeon.darkGroundWest,sprites.dungeon.darkGroundSouth,sprites.dungeon.darkGroundSouthEast0,sprites.dungeon.darkGroundNorthWest1,myTiles.tile3,myTiles.tile4,myTiles.tile5,sprites.dungeon.hazardLava0,myTiles.tile7,myTiles.tile8,myTiles.tile9,sprites.dungeon.darkGroundSouthWest0,myTiles.tile11,myTiles.tile10,myTiles.tile12,myTiles.tile15,myTiles.tile20,sprites.dungeon.darkGroundSouthWest1,sprites.dungeon.darkGroundSouthEast1,sprites.dungeon.darkGroundNorthEast1,sprites.dungeon.hazardLava1], TileScale.Sixteen))
 wall = tiles.getTilesByType(myTiles.tile20)
 Player1 = sprites.create(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . f f f f f f f f . . . . 
-    . . . . f 4 4 4 4 4 4 f . . . . 
-    . . . . f f f 4 4 f f f . . . . 
-    . . . . f 4 4 4 4 4 4 f . . . . 
-    . . . . f 4 4 4 4 4 4 f . . . . 
-    . . . . f f 4 f f 4 f f . . . . 
-    . . . . . f 4 4 4 4 f . . . . . 
-    . . . . . . f f f f . . . . . . 
-    . . . . . . . f f . . . . . . . 
-    . . . . . f f e e f f . . . . . 
-    . . . . f e e e e e e f . . . . 
-    . . . . f f f f f f f f . . . . 
-    . . . . . . f e e f . . . . . . 
-    . . . . . . f e e f . . . . . . 
-    . . . . . . f f f f . . . . . . 
+    ......fffffff......
+    ....ffdddddddff....
+    ...fdddddddddddf...
+    ...fdfdddddddfdf...
+    ..fddffdddddffddf..
+    ..fddf11ddd11fddf..
+    ..fddf181d181fddf..
+    ..fdddddddddddddf..
+    ..fdddddddddddddf..
+    ..fddd4444444dddf..
+    ..fddd4111114dddf..
+    ...fdd4fffff4ddf...
+    ...fdd4111114ddf...
+    ....fffffffffff....
+    ......fffffff......
+    ......fef.fef......
+    ......fef.fef......
+    .....feef.feef.....
+    ....fffff.fffff....
     `, SpriteKind.Player)
 tiles.placeOnRandomTile(Player1, myTiles.tile5)
 controller.moveSprite(Player1, 100, 0)
@@ -283,9 +250,6 @@ let ghost = sprites.create(img`
 tiles.placeOnRandomTile(ghost, myTiles.tile15)
 ghost.x += 14
 game.onUpdate(function () {
-    if (Player1.y > 138) {
-        game.over(false, effects.dissolve)
-    }
     if (ghost.tileKindAt(TileDirection.Left, myTiles.tile15)) {
         ghost.vx = 60
         ghost.setImage(img`
@@ -342,5 +306,67 @@ game.onUpdate(function () {
             ........................
             ........................
             `)
+    }
+    if (controller.player1.isPressed(ControllerButton.Left)) {
+        let mySprite: Sprite = null
+        animation.runImageAnimation(
+        mySprite,
+        [img`
+            ...................
+            ......fffffff......
+            ....ffdddddddff....
+            ...fdddddddddddf...
+            ...fdfdddddddfdf...
+            ..fddffdddddffddf..
+            ..fddf11ddd11fddf..
+            ..fddf181d181fddf..
+            ..fdddddddddddddf..
+            ..fdddddddddddddf..
+            ..fddd4444444dddf..
+            ..fddd4111114dddf..
+            ...fdd4fffff4ddf...
+            ...fdd4111114ddf...
+            ....fffffffffff....
+            .....ffffffff......
+            ....fef....fef.....
+            ...fef......fef....
+            ...ffff.....ffff...
+            `,img`
+            ......fffffff......
+            ....ffdddddddff....
+            ...fdddddddddddf...
+            ...fdfdddddddfdf...
+            ..fddffdddddffddf..
+            ..fddf11ddd11fddf..
+            ..fddf181d181fddf..
+            ..fdddddddddddddf..
+            ..fdddddddddddddf..
+            ..fddd4444444dddf..
+            ..fddd4111114dddf..
+            ...fdd4fffff4ddf...
+            ...fdd4111114ddf...
+            ....fffffffffff....
+            ......fffffff......
+            ......fef.fef......
+            ......fef.fef......
+            .....feef.feef.....
+            ....fffff.fffff....
+            `],
+        500,
+        true
+        )
+    }
+})
+forever(function () {
+    if (Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava0)) {
+        pause(100)
+        if (Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava0) || Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava1)) {
+            game.over(false)
+        }
+    } else if (Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava1)) {
+        pause(100)
+        if (Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava0) || Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava1)) {
+            game.over(false)
+        }
     }
 })
