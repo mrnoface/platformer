@@ -4,31 +4,18 @@ namespace SpriteKind {
     export const ghost2 = SpriteKind.create()
     export const fireball = SpriteKind.create()
     export const Spike = SpriteKind.create()
+    export const boss = SpriteKind.create()
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.boss, function (sprite, otherSprite) {
+    game.over(false)
+})
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Player1.vy == 0) {
         Player1.vy = -150
     }
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (Player1.image.equals(img`
-        . . . . . . f f f f f f . . . . 
-        . . . . f f e e e e f 2 f . . . 
-        . . . f f e e e e f 2 2 2 f . . 
-        . . . f e e e f f e e e e f . . 
-        . . . f f f f e e 2 2 2 2 e f . 
-        . . . f e 2 2 2 f f f f e 2 f . 
-        . . f f f f f f f e e e f f f . 
-        . . f f e 4 4 e b f 4 4 e e f . 
-        . . f e e 4 d 4 1 f d d e f . . 
-        . . . f e e e 4 d d d d f . . . 
-        . . . . f f e e 4 4 4 e f . . . 
-        . . . . . 4 d d e 2 2 2 f . . . 
-        . . . . . e d d e 2 2 2 f . . . 
-        . . . . . f e e f 4 5 5 f . . . 
-        . . . . . . f f f f f f . . . . 
-        . . . . . . . f f f . . . . . . 
-        `)) {
+    if (direction == 1) {
         if (loaded > 0) {
             projectile = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
@@ -51,24 +38,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             loaded += -1
         }
     }
-    if (Player1.image.equals(img`
-        . . . . f f f f f f . . . . . . 
-        . . . f 2 f e e e e f f . . . . 
-        . . f 2 2 2 f e e e e f f . . . 
-        . . f e e e e f f e e e f . . . 
-        . f e 2 2 2 2 e e f f f f . . . 
-        . f 2 e f f f f 2 2 2 e f . . . 
-        . f f f e e e f f f f f f f . . 
-        . f e e 4 4 f b e 4 4 e f f . . 
-        . . f e d d f 1 4 d 4 e e f . . 
-        . . . f d d d d 4 e e e f . . . 
-        . . . f e 4 4 4 e e f f . . . . 
-        . . . f 2 2 2 e d d 4 . . . . . 
-        . . . f 2 2 2 e d d e . . . . . 
-        . . . f 5 5 4 f e e f . . . . . 
-        . . . . f f f f f f . . . . . . 
-        . . . . . . f f f . . . . . . . 
-        `)) {
+    if (direction == 0) {
         if (loaded > 0) {
             projectile = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
@@ -87,7 +57,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
                 . . . . 4 4 2 2 2 2 4 4 . . . . 
                 . . . . . . 4 4 4 4 . . . . . . 
                 . . . . . . . . . . . . . . . . 
-                `, Player1, -100, 50)
+                `, Player1, -100, 0)
             loaded += -1
         }
     }
@@ -199,7 +169,7 @@ function make_tilemap (Levels: number) {
             .................2..2................2....2....2..2..2..2............2...2..
             `, [myTiles.transparency16,sprites.dungeon.darkGroundNorth,sprites.dungeon.darkGroundNorthEast0,sprites.dungeon.darkGroundCenter,sprites.dungeon.darkGroundNorthWest0,sprites.dungeon.darkGroundEast,sprites.dungeon.darkGroundWest,sprites.dungeon.darkGroundSouth,sprites.dungeon.darkGroundSouthEast0,sprites.dungeon.darkGroundNorthWest1,myTiles.tile3,myTiles.tile4,myTiles.tile5,sprites.dungeon.hazardLava0,myTiles.tile7,myTiles.tile8,myTiles.tile9,sprites.dungeon.darkGroundSouthWest0,myTiles.tile11,myTiles.tile10,myTiles.tile12,myTiles.tile15,myTiles.tile20,sprites.dungeon.darkGroundSouthWest1,sprites.dungeon.darkGroundSouthEast1,sprites.dungeon.darkGroundNorthEast1,sprites.dungeon.hazardLava1,myTiles.tile21,myTiles.tile22,myTiles.tile16], TileScale.Sixteen))
     } else if (Levels == 2) {
-        tiles.setTilemap(tiles.createTilemap(hex`4c0014000000000000000000000000000000000006070000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000607000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006070000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000607000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006070000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000504000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000008090000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020202020202000000060700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002090000000000000000000000000000000607000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000030b0900000000000000000000000000080a0700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003030b090000000000000000000000000603070000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000303030b0209000000000000000008020a030700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003030303030b02020202020202020a0303030700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003030303030b0303030303030303030303030700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003030303030303030303030303030303030307000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000`, img`
+        tiles.setTilemap(tiles.createTilemap(hex`4c0014000000000000000000000000000000000006070000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000607000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006070000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000607000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006070000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000504000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000008090000000000000000000000000000000000000000000000000000000000100f0f0f0f0f1100000000000000000000000000000000000000000000000000000000000202020202020000000607000013000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020900000000000000000000000000000006070000000000001500000016000017180000100f0f0f0f0f0f0f0f0f0f0f0f0f1100000000000000000000000000000000000000000000000000030b0900000000000000000000000000080a070000000000100f0f0f0f0f0f0f0f1100000000000000000000000000000000000000000000000000000000000000000000000000000000000003030b090000000000000000000000000603070000000000000e0d141414140c12000000000000000000000000000000000000000000000000000000000000000000000000000000000000000303030b0209000000000000000008020a0307000000000000000d141414140c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003030303030b02020202020202020a03030307000000000000000d141414140c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003030303030b03030303030303030303030307000000000000000d141414140c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003030303030303030303030303030303030307000000000000000d141414140c0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000`, img`
             ............................................................................
             ............................................................................
             ............................................................................
@@ -211,18 +181,73 @@ function make_tilemap (Levels: number) {
             ................22..........................................................
             ............................................................................
             ............................................................................
-            .................22.........................................................
-            ........222222...22.........................................................
-            22...............22.........................................................
-            ..2.............222.........................................................
-            ...2............2.2.........................................................
-            ....22........222.2.........................................................
-            ......222222222...2.........................................................
-            ..................2.........................................................
-            ..................2.........................................................
-            `, [myTiles.transparency16,myTiles.tile5,sprites.dungeon.darkGroundNorth,sprites.dungeon.darkGroundCenter,sprites.dungeon.darkGroundSouthEast0,sprites.dungeon.darkGroundSouthWest0,sprites.dungeon.darkGroundWest,sprites.dungeon.darkGroundEast,sprites.dungeon.darkGroundNorthWest0,sprites.dungeon.darkGroundNorthEast0,sprites.dungeon.darkGroundSouthEast1,sprites.dungeon.darkGroundSouthWest1], TileScale.Sixteen))
+            .................22.............................2222222.....................
+            ........222222...22..2......................................................
+            22...............22.............22..222222222222222.........................
+            ..2.............222.....2222222222..........................................
+            ...2............2.2......22....22...........................................
+            ....22........222.2.......2....2............................................
+            ......222222222...2.......2....2............................................
+            ..................2.......2....2............................................
+            ..................2.......2....2............................................
+            `, [myTiles.transparency16,myTiles.tile5,sprites.dungeon.darkGroundNorth,sprites.dungeon.darkGroundCenter,sprites.dungeon.darkGroundSouthEast0,sprites.dungeon.darkGroundSouthWest0,sprites.dungeon.darkGroundWest,sprites.dungeon.darkGroundEast,sprites.dungeon.darkGroundNorthWest0,sprites.dungeon.darkGroundNorthEast0,sprites.dungeon.darkGroundSouthEast1,sprites.dungeon.darkGroundSouthWest1,sprites.builtin.forestTiles11,sprites.builtin.forestTiles9,sprites.builtin.forestTiles17,sprites.builtin.forestTiles22,sprites.builtin.forestTiles21,sprites.builtin.forestTiles23,sprites.builtin.forestTiles19,sprites.builtin.forestTiles0,sprites.builtin.forestTiles10,sprites.castle.saplingPine,sprites.castle.saplingOak,sprites.castle.rock0,sprites.castle.rock1], TileScale.Sixteen))
         loaded = 0
         tiles.placeOnRandomTile(Player1, myTiles.tile5)
+        monster = sprites.create(img`
+            ................
+            ................
+            ....ffff........
+            ...ffffffffffff.
+            ..ffffffffffffff
+            .fffffffffffffff
+            .fffffffffffffff
+            .fffffffffffffff
+            ..fffffffffffff.
+            ....66.66.6.6.6.
+            ....6..6.66.6.6.
+            ....6.6..66.6.6.
+            ....6.6..66.6.6.
+            ....666.6.6.6..6
+            ...6.6..6.6.6..6
+            ..66.6.6..6.6..6
+            .66..666..66...6
+            .6...66...66...6
+            .6...666..66...6
+            .6...6.6.66...6.
+            .6...6.6.66...6.
+            ..6..6..666...6.
+            ..6.6...666...6.
+            ..6.6...666..6..
+            ..6.6...666..6..
+            ..6.6...666..6..
+            ..66....6.66.6..
+            ..66....6.6.6666
+            66..66666.6...6.
+            6...66..6.66..6.
+            6...66..6..6.6..
+            6...66...6...6..
+            `, SpriteKind.boss)
+        tiles.placeOnTile(monster, tiles.getTileLocation(42, 11))
+        boss_life = 3
+        fireball2 = sprites.create(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . 4 4 4 4 . . . . . . 
+            . . . . 4 4 4 5 5 4 4 4 . . . . 
+            . . . 3 3 3 3 4 4 4 4 4 4 . . . 
+            . . 4 3 3 3 3 2 2 2 1 1 4 4 . . 
+            . . 3 3 3 3 3 2 2 2 1 1 5 4 . . 
+            . 4 3 3 3 3 2 2 2 2 2 5 5 4 4 . 
+            . 4 3 3 3 2 2 2 4 4 4 4 5 4 4 . 
+            . 4 4 3 3 2 2 4 4 4 4 4 4 4 4 . 
+            . 4 2 3 3 2 2 4 4 4 4 4 4 4 4 . 
+            . . 4 2 3 3 2 4 4 4 4 4 2 4 . . 
+            . . 4 2 2 3 2 2 4 4 4 2 4 4 . . 
+            . . . 4 2 2 2 2 2 2 2 2 4 . . . 
+            . . . . 4 4 2 2 2 2 4 4 . . . . 
+            . . . . . . 4 4 4 4 . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, SpriteKind.fireball)
+        tiles.placeOnTile(fireball2, tiles.getTileLocation(21, 11))
     }
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Spike, function (sprite, otherSprite) {
@@ -235,13 +260,21 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.ghost2, function (sprite, otherS
         game.over(false)
     }
 })
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.boss, function (sprite, otherSprite) {
+    sprite.destroy(effects.fire, 500)
+    boss_life += -1
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.fireball, function (sprite, otherSprite) {
     fireball.destroy(effects.fire, 100)
     loaded = 5
 })
+let fireball2: Sprite = null
+let boss_life = 0
+let monster: Sprite = null
 let fireball: Sprite = null
 let key: Sprite = null
 let projectile: Sprite = null
+let direction = 0
 let loaded = 0
 let Player1: Sprite = null
 let wall: tiles.Location[] = []
@@ -450,6 +483,7 @@ tiles.placeOnRandomTile(ghost2, myTiles.tile21)
 ghost.x += 14
 ghost2.x += 14
 loaded = 0
+direction = 1
 game.onUpdate(function () {
     if (ghost2.tileKindAt(TileDirection.Left, myTiles.tile21)) {
         ghost2.vx = 60
@@ -567,49 +601,7 @@ game.onUpdate(function () {
             ........................
             `)
     }
-    if (loaded > 0) {
-        Player1.say(loaded)
-    } else {
-        Player1.say("")
-    }
-})
-game.onUpdate(function () {
-	
-})
-forever(function () {
-    if (Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava0)) {
-        pause(100)
-        if (Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava0) || Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava1)) {
-            game.over(false)
-        }
-    } else if (Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava1)) {
-        pause(100)
-        if (Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava0) || Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava1)) {
-            game.over(false)
-        }
-    }
-})
-forever(function () {
-    if (controller.left.isPressed()) {
-        Player1.setImage(img`
-            . . . . f f f f f f . . . . . . 
-            . . . f 2 f e e e e f f . . . . 
-            . . f 2 2 2 f e e e e f f . . . 
-            . . f e e e e f f e e e f . . . 
-            . f e 2 2 2 2 e e f f f f . . . 
-            . f 2 e f f f f 2 2 2 e f . . . 
-            . f f f e e e f f f f f f f . . 
-            . f e e 4 4 f b e 4 4 e f f . . 
-            . . f e d d f 1 4 d 4 e e f . . 
-            . . . f d d d d 4 e e e f . . . 
-            . . . f e 4 4 4 e e f f . . . . 
-            . . . f 2 2 2 e d d 4 . . . . . 
-            . . . f 2 2 2 e d d e . . . . . 
-            . . . f 5 5 4 f e e f . . . . . 
-            . . . . f f f f f f . . . . . . 
-            . . . . . . f f f . . . . . . . 
-            `)
-    } else if (controller.right.isPressed()) {
+    if (controller.right.isPressed()) {
         Player1.setImage(img`
             . . . . . . f f f f f f . . . . 
             . . . . f f e e e e f 2 f . . . 
@@ -628,5 +620,50 @@ forever(function () {
             . . . . . . f f f f f f . . . . 
             . . . . . . . f f f . . . . . . 
             `)
+        direction = 1
+    } else if (controller.left.isPressed()) {
+        Player1.setImage(img`
+            . . . . f f f f f f . . . . . . 
+            . . . f 2 f e e e e f f . . . . 
+            . . f 2 2 2 f e e e e f f . . . 
+            . . f e e e e f f e e e f . . . 
+            . f e 2 2 2 2 e e f f f f . . . 
+            . f 2 e f f f f 2 2 2 e f . . . 
+            . f f f e e e f f f f f f f . . 
+            . f e e 4 4 f b e 4 4 e f f . . 
+            . . f e d d f 1 4 d 4 e e f . . 
+            . . . f d d d d 4 e e e f . . . 
+            . . . f e 4 4 4 e e f f . . . . 
+            . . . f 2 2 2 e d d 4 . . . . . 
+            . . . f 2 2 2 e d d e . . . . . 
+            . . . f 5 5 4 f e e f . . . . . 
+            . . . . f f f f f f . . . . . . 
+            . . . . . . f f f . . . . . . . 
+            `)
+        direction = 0
+    }
+    if (loaded > 0) {
+        Player1.say(loaded)
+    } else {
+        Player1.say("")
+    }
+    if (boss_life <= 0) {
+        monster.destroy(effects.warmRadial, 500)
+    }
+})
+game.onUpdate(function () {
+	
+})
+forever(function () {
+    if (Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava0)) {
+        pause(100)
+        if (Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava0) || Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava1)) {
+            game.over(false)
+        }
+    } else if (Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava1)) {
+        pause(100)
+        if (Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava0) || Player1.tileKindAt(TileDirection.Bottom, sprites.dungeon.hazardLava1)) {
+            game.over(false)
+        }
     }
 })
